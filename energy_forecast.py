@@ -56,5 +56,29 @@ parameters = {
 grid_search = GridSearchCV(estimator=model, cv=cv_split, param_grid=parameters)
 grid_search.fit(X_train, y_train)
 
-prediction = grid_search.predict(X_test)
-print(f"MSE: {mean_squared_error(y_test, prediction)}")
+y_pred = grid_search.predict(X_test)
+print(f"MSE: {mean_squared_error(y_test, y_pred)}")
+
+
+from sklearn.metrics import r2_score
+
+r2 = r2_score(y_test, y_pred)
+print(f"R² score on test data: {r2:.4f}")
+
+
+
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+plt.scatter(y_test, y_pred, alpha=0.6, color='dodgerblue', label='Predicted vs Actual')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2, label='Ideal: y = x')
+
+plt.xlabel("Actual Values (y_test)")
+plt.ylabel("Predicted Values (y_pred)")
+plt.title("Actual vs Predicted Values")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
